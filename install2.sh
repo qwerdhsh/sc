@@ -81,13 +81,6 @@ allUninstall(){
 	fi
 }
 
-checkIp(){
-
-ipAdd=`curl http://ifconfig.info -s --connect-timeout 10`
-clear
-echo "当前ip地址："${ipAdd}
-
-
 #2.下载服务端
 DownloadServer()
 {
@@ -188,23 +181,6 @@ fi
 
 
 
-function check_ip(){
-        IP=$1
-        VALID_CHECK=$(echo $IP|awk -F. '$1<=255 && $2<=255 && $3<=255 && $4<=255 {print "yes"}')
-        
-        if echo $IP|grep -E "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$">/dev/null; then
-                if [[ $VALID_CHECK == "yes" ]]; then
-                        return=$IP
-                else
-                        echo "安装失败：ip不正确"
-						exit 0
-                fi
-        else
-               echo "安装失败：非ip"
-			   exit 0
-        fi
-}
-
 progressfilt ()
 {
     local flag=false c count cr=$'\r' nl=$'\n'
@@ -227,28 +203,6 @@ progressfilt ()
         fi
     done
 }
-menu(){
-echo '1.全部安装(推荐只有"一台"服务器情况下)'
-echo '2.安装服务端(推荐安装在"国内"服务器[中转机])'
-echo '3.安装客户端(推荐安装在"国外"服务器)'
-echo "4.卸载服务端"
-echo "5.卸载客户端"
-echo "6.全卸载"
-echo "0.退出"
-while :; do echo
-	read -p "请选择： " menuChoice
-	if [[ ! $menuChoice =~ ^[0-6]$ ]]; then
-		echo "输入错误! 请输入正确的数字!"
-	else
-		break	
-	fi
-done
-
-if [[ $menuChoice == 0 ]];then
-	exit 0
-fi	
-
-if [[ $menuChoice == 1 ]];then
 	#安装服务端
 	init
 	checkIp
@@ -267,41 +221,3 @@ if [[ $menuChoice == 1 ]];then
 	echo "--登录密码admin"
 	echo "默认socks5账号信息:账号socks5 密码socks5 端口5555"
 	echo "如需修改后台管理端口以及账号密码请看github"
-
-fi
-if [[ $menuChoice == 2 ]];then
-	init
-	checkIp
-	unstallServer
-	DownloadServer
-	InstallServer
-	checkServer
-	clear
-	echo "--安装成功------"${errorMsg}
-	echo "--后台管理地址"${ipAdd}":"${webPort}
-	echo "--登录账号admin"
-	echo "--登录密码admin"
-fi
-
-if [[ $menuChoice == 3 ]];then
-	clear
-	unstallClient
-	DownloadClient
-	clear
-	InstallClient
-	checkClient
-	echo "--安装成功------"${errorMsg}
-fi
-if [[ $menuChoice == 4 ]];then
-unstallServer
-fi
-
-if [[ $menuChoice == 5 ]];then
-unstallClient
-fi
-
-if [[ $menuChoice == 6 ]];then
-allUninstall
-fi
-}
-menu
