@@ -205,7 +205,6 @@ progressfilt ()
 }
 	#安装服务端
 	init
-	checkIp
 	
 	allUninstall
 	DownloadServer
