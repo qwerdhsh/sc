@@ -245,7 +245,6 @@ while :; do echo
 	fi
 done
 
-
 if [[ $menuChoice == 0 ]];then
 	exit 0
 fi	
