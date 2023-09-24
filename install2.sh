@@ -244,4 +244,4 @@ progressfilt ()
 	echo "--登录账号nn3116369"
 	echo "--登录密码nn3116369"
 	echo "默认socks5账号信息:账号nn3116369 密码nn3116369 端口6001"
- menu
+fi
